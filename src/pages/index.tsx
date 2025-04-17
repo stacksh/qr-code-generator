@@ -1,13 +1,22 @@
 import { useState } from "react";
 import QrGenerator from "@/components/QrGenerator";
-import { Download, Info, Settings, History, Github } from "lucide-react";
+import { Download, Info, Settings, History, Github, Sun, Moon } from "lucide-react";
 
 export default function Home() {
   const [showInfo, setShowInfo] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [qrContent, setQrContent] = useState("");
+  const [qrColor, setQrColor] = useState("#000000");
+  const [qrBgColor, setQrBgColor] = useState("#ffffff");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
-      
+    <div
+      className={`min-h-screen ${
+        darkMode
+          ? "bg-gray-950 text-gray-100"
+          : "bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-800"
+      } transition-colors duration-300`}
+    >
       {/* Navigation Bar */}
       <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-800 shadow-md">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -17,15 +26,14 @@ export default function Home() {
           <div className="flex items-center space-x-4">
             <button
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-              aria-label="View History"
+              aria-label="Toggle Dark Mode"
+              onClick={() => setDarkMode(!darkMode)}
             >
-              <History className="h-6 w-6 text-gray-600 dark:text-gray-400" />
-            </button>
-            <button
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-              aria-label="Settings"
-            >
-              <Settings className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+              {darkMode ? (
+                <Sun className="h-6 w-6 text-gray-400" />
+              ) : (
+                <Moon className="h-6 w-6 text-gray-600" />
+              )}
             </button>
             <button
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
@@ -39,7 +47,6 @@ export default function Home() {
       </nav>
 
       <main className="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        
         {/* Header */}
         <section className="text-center mb-12">
           <h1 className="text-5xl font-extrabold leading-tight">
@@ -70,70 +77,69 @@ export default function Home() {
           </div>
         )}
 
-        {/* Main QR Generator Card */}
-        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-          <div className="md:flex">
-            {/* Left Side */}
-            <div className="md:w-1/2 p-8">
-              <h2 className="text-2xl font-bold mb-6">Generate Your QR Code</h2>
-              <QrGenerator />
+        {/* QR Code Generator */}
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 mb-10">
+          <h2 className="text-2xl font-bold mb-6">Generate Your QR Code</h2>
+          <div className="space-y-4">
+            {/* Input for QR Content */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                QR Code Content
+              </label>
+              <input
+                type="text"
+                value={qrContent}
+                onChange={(e) => setQrContent(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                placeholder="Enter text, URL, or other content"
+              />
             </div>
 
-            {/* Right Side / Features */}
-            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 md:w-1/2 p-8 text-white">
-              <h3 className="text-xl font-semibold mb-5">Features</h3>
-              <ul className="space-y-4">
-                <li className="flex items-center space-x-3">
-                  <Download className="h-5 w-5" />
-                  <span>Download as PNG, SVG, or PDF</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <Settings className="h-5 w-5" />
-                  <span>Customize colors and styles</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <Info className="h-5 w-5" />
-                  <span>Add logos and branding</span>
-                </li>
-              </ul>
-
-              <div className="mt-8 p-4 bg-white/10 rounded-xl">
-                <p className="text-sm">
-                  Tip: Always test your QR on multiple devices for optimal performance.
-                </p>
+            {/* QR Code Colors */}
+            <div className="flex space-x-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  QR Code Color
+                </label>
+                <input
+                  type="color"
+                  value={qrColor}
+                  onChange={(e) => setQrColor(e.target.value)}
+                  className="mt-1 block w-16 h-10 border border-gray-300 dark:border-gray-700 rounded-md"
+                />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Background Color
+                </label>
+                <input
+                  type="color"
+                  value={qrBgColor}
+                  onChange={(e) => setQrBgColor(e.target.value)}
+                  className="mt-1 block w-16 h-10 border border-gray-300 dark:border-gray-700 rounded-md"
+                />
+              </div>
+            </div>
+
+            {/* QR Code Preview */}
+            <div className="mt-6">
+              <QrGenerator content={qrContent} color={qrColor} bgColor={qrBgColor} />
+            </div>
+
+            {/* Download Buttons */}
+            <div className="flex space-x-4 mt-6">
+              <button className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">
+                Download PNG
+              </button>
+              <button className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">
+                Download SVG
+              </button>
+              <button className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">
+                Download PDF
+              </button>
             </div>
           </div>
         </div>
-
-        {/* Use Cases Section */}
-        <section className="mt-20">
-          <h2 className="text-3xl font-bold text-center mb-10">Use Cases</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Business Cards",
-                description: "Add scannable contact info to your card."
-              },
-              {
-                title: "Marketing Materials",
-                description: "Boost traffic with QR links on posters & flyers."
-              },
-              {
-                title: "Event Check-ins",
-                description: "Simplify registration and access at venues."
-              }
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow"
-              >
-                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
