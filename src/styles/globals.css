@@ -2,22 +2,60 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: #f9fafb; /* Light background for light mode */
+  color: #1f2937; /* Dark text for light mode */
+}
+
+body.dark {
   background-color: #1e293b; /* Dark background for dark mode */
   color: #e2e8f0; /* Light text for dark mode */
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  color: #f8fafc; /* Ensure headings are brighter for better visibility */
+}
+
+button {
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #3b82f6; /* Primary button color */
+  color: #ffffff; /* Button text color */
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #2563eb; /* Darker blue on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+  background-color: #ffffff; /* Card background for light mode */
+  color: #1f2937; /* Card text color for light mode */
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+body.dark .card {
+  background-color: #1e293b; /* Card background for dark mode */
+  color: #e2e8f0; /* Card text color for dark mode */
 }
 
 input, select, textarea {
-  background-color: #334155; /* Input background matches dark mode */
-  color: #e2e8f0; /* Input text color */
-  border: 1px solid #475569; /* Subtle border for inputs */
+  background-color: #f3f4f6; /* Input background for light mode */
+  color: #1f2937; /* Input text color for light mode */
+  border: 1px solid #d1d5db; /* Subtle border for inputs */
   border-radius: 0.375rem; /* Rounded corners */
   padding: 0.5rem 0.75rem;
   transition: border-color 0.3s ease;
+}
+
+body.dark input, body.dark select, body.dark textarea {
+  background-color: #334155; /* Input background for dark mode */
+  color: #e2e8f0; /* Input text color for dark mode */
+  border: 1px solid #475569; /* Subtle border for inputs in dark mode */
 }
 
 input:focus, select:focus, textarea:focus {
@@ -25,23 +63,111 @@ input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
-button {
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #3b82f6; /* Primary button color */
-  color: #ffffff; /* Button text color */
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-}
-
-button:hover {
-  background-color: #2563eb; /* Darker blue on hover */
-}
-
-.card {
-  background-color: #1e293b; /* Card background matches dark mode */
-  color: #e2e8f0; /* Card text color */
-  border-radius: 0.5rem;
+footer {
+  background-color: #f3f4f6; /* Footer background for light mode */
+  color: #6b7280; /* Footer text color for light mode */
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center;
+}
+
+body.dark footer {
+  background-color: #1e293b; /* Footer background for dark mode */
+  color: #9ca3af; /* Footer text color for dark mode */
+}
+
+main {
+  max-width: 64rem; /* max-w-4xl */
+  margin: 0 auto; /* mx-auto */
+  padding: 4rem 1.5rem; /* py-16 px-6 */
+}
+
+main .header {
+  text-align: center; /* text-center */
+  margin-bottom: 3rem; /* mb-12 */
+}
+
+main .header h1 {
+  font-size: 3rem; /* text-5xl */
+  font-weight: 800; /* font-extrabold */
+  color: #6366f1; /* text-indigo-500 */
+}
+
+body.dark main .header h1 {
+  color: #818cf8; /* dark:text-indigo-400 */
+}
+
+main .header p {
+  margin-top: 1rem; /* mt-4 */
+  font-size: 1.125rem; /* text-lg */
+  color: #4b5563; /* text-gray-600 */
+}
+
+body.dark main .header p {
+  color: #9ca3af; /* dark:text-gray-400 */
+}
+
+main .info-panel {
+  margin-bottom: 2.5rem; /* mb-10 */
+}
+
+main .info-panel h2 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+main .info-panel p,
+main .info-panel ul {
+  color: #4b5563; /* text-gray-600 */
+}
+
+body.dark main .info-panel p,
+body.dark main .info-panel ul {
+  color: #9ca3af; /* dark:text-gray-400 */
+}
+
+main .info-panel ul {
+  list-style-type: disc; /* list-disc */
+  padding-left: 1.25rem; /* pl-5 */
+  margin-top: 0.5rem; /* mt-2 */
+  gap: 0.5rem; /* space-y-2 */
+}
+
+main .info-panel p.italic {
+  margin-top: 1rem; /* mt-4 */
+  font-size: 0.875rem; /* text-sm */
+  font-style: italic; /* italic */
+  color: #6b7280; /* text-gray-500 */
+}
+
+body.dark main .info-panel p.italic {
+  color: #9ca3af; /* dark:text-gray-400 */
+}
+
+main .qr-generator {
+  margin-top: 1.5rem; /* mt-6 */
+}
+
+main .qr-generator label {
+  display: block; /* block */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  color: #4b5563; /* text-gray-700 */
+}
+
+body.dark main .qr-generator label {
+  color: #d1d5db; /* dark:text-gray-300 */
+}
+
+main .qr-generator input {
+  margin-top: 0.25rem; /* mt-1 */
+  display: block; /* block */
+  width: 100%; /* w-full */
+}
+
+main .qr-generator .color-input {
+  margin-top: 0.25rem; /* mt-1 */
+  display: block; /* block */
+  width: 4rem; /* w-16 */
+  height: 2.5rem; /* h-10 */
 }
