@@ -44,7 +44,7 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
     }
   };
 
-  const handleError = (err: any) => {
+  const handleError = (err: Error | null) => {
     console.error("QR Scanner Error:", err);
   };
 
@@ -58,7 +58,7 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
             size={size}
             fgColor={color}
             bgColor={bgColor}
-            level={errorCorrection as any}
+            level={errorCorrection as "L" | "M" | "Q" | "H"}
           />
         )}
       </div>
