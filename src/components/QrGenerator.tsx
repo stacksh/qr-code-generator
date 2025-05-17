@@ -41,15 +41,11 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
   const handleCopy = () => {
     if (content) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        // Use the Clipboard API if available
         navigator.clipboard.writeText(content).then(() => {
           setCopySuccess(true);
-          setTimeout(() => setCopySuccess(false), 2000); // Reset success message after 2 seconds
-        }).catch((err) => {
-          console.error("Failed to copy content:", err);
-        });
+          setTimeout(() => setCopySuccess(false), 2000);
+        }).catch((err) => console.error("Failed to copy content:", err));
       } else {
-        // Fallback method for older browsers
         const textarea = document.createElement("textarea");
         textarea.value = content;
         document.body.appendChild(textarea);
@@ -57,7 +53,7 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
         try {
           document.execCommand("copy");
           setCopySuccess(true);
-          setTimeout(() => setCopySuccess(false), 2000); // Reset success message after 2 seconds
+          setTimeout(() => setCopySuccess(false), 2000);
         } catch (err) {
           console.error("Fallback copy failed:", err);
         }
@@ -78,9 +74,12 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
   };
 
   return (
-    <div className="text-center">
-      {/* QR Code Preview */}
-      <div ref={qrRef} className="inline-block bg-white p-4 rounded-lg shadow-md">
+    <div className="max-w-md mx-auto px-4 py-8 rounded-xl shadow-xl bg-white dark:bg-gray-900 transition-all duration-300">
+      {/* QR Code Display */}
+      <div
+        ref={qrRef}
+        className="mx-auto w-fit p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg transition"
+      >
         {content && (
           <QRCodeCanvas
             value={content}
@@ -92,53 +91,49 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
         )}
       </div>
 
-      {/* Download Button */}
+      {/* Buttons */}
       {content && (
-        <div className="mt-4 flex justify-center space-x-4">
+        <div className="mt-6 flex flex-wrap justify-center gap-4">
           <button
             onClick={downloadQR}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700"
+            className="px-5 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
           >
-            Download QR Code
+            Download
           </button>
           <button
             onClick={handleCopy}
-            className="px-4 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700"
+            className="px-5 py-2 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition"
           >
-            {copySuccess ? "Copied!" : "Copy Content"}
+            {copySuccess ? "Copied!" : "Copy Text"}
           </button>
         </div>
       )}
 
-      {/* QR Code Scanner */}
-      <div className="mt-6">
+      {/* Scanner Toggle */}
+      <div className="mt-8 text-center">
         <button
           onClick={() => setShowScanner(!showScanner)}
-          className="px-4 py-2 bg-gray-600 text-white rounded-md shadow hover:bg-gray-700"
+          className="px-5 py-2 rounded-xl bg-gray-600 text-white font-medium hover:bg-gray-700 transition"
         >
           {showScanner ? "Close Scanner" : "Open Scanner"}
         </button>
+
         {showScanner && (
-          <div className="mt-4">
-            <div style={{ width: "100%" }}>
-              <QrReader
-                constraints={{ facingMode: "environment" }}
-                onResult={(result, error) => {
-                  if (result) {
-                    handleScan(result.getText());
-                  }
-                  if (error) {
-                    handleError(error);
-                  }
-                }}
-              />
-            </div>
+          <div className="mt-4 rounded-lg overflow-hidden shadow-md border border-gray-300 dark:border-gray-700">
+            <QrReader
+              constraints={{ facingMode: "environment" }}
+              onResult={(result, error) => {
+                if (result) handleScan(result.getText());
+                if (error) handleError(error);
+              }}
+            />
           </div>
         )}
+
         {scannedData && (
-          <p className="mt-4 text-sm text-gray-700 dark:text-gray-300">
-            Scanned Data: <span className="font-medium">{scannedData}</span>
-          </p>
+          <div className="mt-4 text-sm text-gray-700 dark:text-gray-300">
+            <span className="font-semibold">Scanned:</span> {scannedData}
+          </div>
         )}
       </div>
     </div>
