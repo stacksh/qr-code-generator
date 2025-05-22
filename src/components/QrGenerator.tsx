@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import dynamic from "next/dynamic";
 
-// Dynamically import QR Reader to prevent SSR issues
 const QrReader = dynamic(() => import("react-qr-reader").then((mod) => mod.QrReader), { ssr: false });
 
 interface QrGeneratorProps {
@@ -74,11 +73,11 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-8 rounded-xl shadow-xl bg-white dark:bg-gray-900 transition-all duration-300">
+    <div className="max-w-md mx-auto px-6 py-10 rounded-3xl shadow-2xl bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-800 transition-all duration-300">
       {/* QR Code Display */}
       <div
         ref={qrRef}
-        className="mx-auto w-fit p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg transition"
+        className="mx-auto w-fit p-5 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition mb-6"
       >
         {content && (
           <QRCodeCanvas
@@ -93,16 +92,16 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
 
       {/* Buttons */}
       {content && (
-        <div className="mt-6 flex flex-wrap justify-center gap-4">
+        <div className="mt-4 flex flex-wrap justify-center gap-4">
           <button
             onClick={downloadQR}
-            className="px-5 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
+            className="px-6 py-2 rounded-full bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 hover:scale-105 transition-all duration-150"
           >
             Download
           </button>
           <button
             onClick={handleCopy}
-            className="px-5 py-2 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition"
+            className="px-6 py-2 rounded-full bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700 hover:scale-105 transition-all duration-150"
           >
             {copySuccess ? "Copied!" : "Copy Text"}
           </button>
@@ -110,28 +109,31 @@ const QrGenerator: React.FC<QrGeneratorProps> = ({
       )}
 
       {/* Scanner Toggle */}
-      <div className="mt-8 text-center">
+      <div className="mt-10 text-center">
         <button
           onClick={() => setShowScanner(!showScanner)}
-          className="px-5 py-2 rounded-xl bg-gray-600 text-white font-medium hover:bg-gray-700 transition"
+          className="px-6 py-2 rounded-full bg-gray-600 text-white font-semibold shadow hover:bg-gray-700 hover:scale-105 transition-all duration-150"
         >
           {showScanner ? "Close Scanner" : "Open Scanner"}
         </button>
 
         {showScanner && (
-          <div className="mt-4 rounded-lg overflow-hidden shadow-md border border-gray-300 dark:border-gray-700">
-            <QrReader
-              constraints={{ facingMode: "environment" }}
-              onResult={(result, error) => {
-                if (result) handleScan(result.getText());
-                if (error) handleError(error);
-              }}
-            />
+          <div className="mt-6 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg p-4 flex flex-col items-center">
+            <div style={{ width: "100%", borderRadius: "1rem", overflow: "hidden" }}>
+              <QrReader
+                constraints={{ facingMode: "environment" }}
+                onResult={(result, error) => {
+                  if (result) handleScan(result.getText());
+                  if (error) handleError(error);
+                }}
+              />
+            </div>
+            <span className="mt-2 text-xs text-gray-500 dark:text-gray-400">Point your camera at a QR code</span>
           </div>
         )}
 
         {scannedData && (
-          <div className="mt-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-6 text-base text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-xl px-4 py-2 shadow">
             <span className="font-semibold">Scanned:</span> {scannedData}
           </div>
         )}
