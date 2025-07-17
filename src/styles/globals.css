@@ -60,6 +60,11 @@ button:hover, button:focus {
   transition: background 0.3s, box-shadow 0.3s;
 }
 
+.card:hover {
+  box-shadow: 0 12px 36px 0 rgba(99,102,241,0.18);
+  transform: translateY(-2px) scale(1.01);
+}
+
 body.dark .card {
   background: rgba(30,41,59,0.97);
   color: #e2e8f0;
@@ -276,4 +281,29 @@ body.dark .qr-type-selector select {
   border-color: #6366f1;
   box-shadow: 0 0 0 2px #6366f155;
   outline: none;
+}
+
+.qr-history-list {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(99,102,241,0.03);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(99,102,241,0.06);
+}
+
+.qr-history-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e0e7ef;
+}
+.qr-history-item:last-child {
+  border-bottom: none;
+}
+body.dark .qr-history-list {
+  background: rgba(129,140,248,0.08);
+}
+body.dark .qr-history-item {
+  border-bottom: 1px solid #353b50;
 }
