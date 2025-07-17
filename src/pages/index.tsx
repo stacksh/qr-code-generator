@@ -1,6 +1,7 @@
 import { useState } from "react";
 import QrGenerator from "@/components/QrGenerator";
-import { Info, Sun, Moon } from "lucide-react";
+import { QRCodeCanvas } from "qrcode.react";
+import { Info, Sun, Moon, Clipboard } from "lucide-react";
 
 export default function Home() {
   const [showInfo, setShowInfo] = useState(false);
@@ -10,7 +11,22 @@ export default function Home() {
   const [qrBgColor, setQrBgColor] = useState("#ffffff");
   const [qrSize] = useState(200);
   const [errorCorrection] = useState("M");
-  const [qrHistory] = useState<string[]>([]);
+  const [qrHistory, setQrHistory] = useState<{ content: string; time: string }[]>([]);
+
+  const handleGenerate = () => {
+    if (qrContent.trim()) {
+      setQrHistory([
+        { content: qrContent, time: new Date().toLocaleTimeString() },
+        ...qrHistory.slice(0, 4),
+      ]);
+    }
+  };
+
+  const handleCopyHistory = (text: string) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+  };
 
   return (
     <div
@@ -132,6 +148,12 @@ export default function Home() {
               />
             </div>
           </div>
+          <button
+            onClick={handleGenerate}
+            className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+          >
+            Generate & Save
+          </button>
         </div>
       </main>
 
@@ -146,15 +168,24 @@ export default function Home() {
 
       {/* QR Code History */}
       {qrHistory.length > 0 && (
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mt-10 shadow-md">
-          <h2 className="text-xl font-bold mb-4">QR Code History</h2>
-          <ul className="space-y-2">
-            {qrHistory.map((item, index) => (
-              <li key={index} className="text-gray-600 dark:text-gray-400">
-                {item}
-              </li>
-            ))}
-          </ul>
+        <div className="qr-history-list card">
+          <h2 className="text-lg font-bold mb-2">Recent QR Codes</h2>
+          {qrHistory.map((item, idx) => (
+            <div key={idx} className="qr-history-item flex items-center py-2 border-b last:border-b-0">
+              <div className="main-qr-preview" style={{ width: 64, height: 64, padding: 0 }}>
+                <QRCodeCanvas value={item.content} size={56} />
+              </div>
+              <div className="flex-1 truncate text-sm">{item.content}</div>
+              <button
+                title="Copy"
+                onClick={() => handleCopyHistory(item.content)}
+                className="px-2 py-1 rounded-full bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800 transition"
+              >
+                <Clipboard className="w-4 h-4 text-indigo-600 dark:text-indigo-300" />
+              </button>
+              <span className="text-xs text-gray-400 ml-2">{item.time}</span>
+            </div>
+          ))}
         </div>
       )}
 
