@@ -12,6 +12,7 @@ export default function Home() {
   const [qrSize] = useState(200);
   const [errorCorrection] = useState("M");
   const [qrHistory, setQrHistory] = useState<{ content: string; time: string }[]>([]);
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 
   const handleGenerate = () => {
     if (qrContent.trim()) {
@@ -22,9 +23,11 @@ export default function Home() {
     }
   };
 
-  const handleCopyHistory = (text: string) => {
+  const handleCopyHistory = (text: string, idx: number) => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text);
+      setCopiedIdx(idx);
+      setTimeout(() => setCopiedIdx(null), 1200);
     }
   };
 
@@ -167,7 +170,7 @@ export default function Home() {
       </section>
 
       {/* QR Code History */}
-      {qrHistory.length > 0 && (
+      {qrHistory.length > 0 ? (
         <div className="qr-history-list card">
           <h2 className="text-lg font-bold mb-2">Recent QR Codes</h2>
           {qrHistory.map((item, idx) => (
@@ -178,14 +181,23 @@ export default function Home() {
               <div className="flex-1 truncate text-sm">{item.content}</div>
               <button
                 title="Copy QR content to clipboard"
-                onClick={() => handleCopyHistory(item.content)}
-                className="px-2 py-1 rounded-full bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800 transition"
+                onClick={() => handleCopyHistory(item.content, idx)}
+                className="relative px-2 py-1 rounded-full bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800 transition"
               >
                 <Clipboard className="w-4 h-4 text-indigo-600 dark:text-indigo-300" />
+                {copiedIdx === idx && (
+                  <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs rounded px-2 py-0.5 shadow">
+                    Copied!
+                  </span>
+                )}
               </button>
               <span className="text-xs text-gray-400 ml-2">{item.time}</span>
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-400 mt-8">
+          No QR codes generated yet. Your recent QR codes will appear here!
         </div>
       )}
 
