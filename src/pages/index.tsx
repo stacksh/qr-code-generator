@@ -177,7 +177,7 @@ export default function Home() {
               </div>
               <div className="flex-1 truncate text-sm">{item.content}</div>
               <button
-                title="Copy"
+                title="Copy QR content to clipboard"
                 onClick={() => handleCopyHistory(item.content)}
                 className="px-2 py-1 rounded-full bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800 transition"
               >
