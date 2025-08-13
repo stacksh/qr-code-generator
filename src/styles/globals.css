@@ -307,3 +307,16 @@ body.dark .qr-history-list {
 body.dark .qr-history-item {
   border-bottom: 1px solid #353b50;
 }
+
+/* Highlight QR history items on hover for better UX */
+.qr-history-item {
+  border-radius: 0.75rem;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.qr-history-item:hover {
+  background: rgba(129,140,248,0.10);
+  box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+}
+body.dark .qr-history-item:hover {
+  background: rgba(99,102,241,0.13);
+}
